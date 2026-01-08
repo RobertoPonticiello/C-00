@@ -1,0 +1,23 @@
+
+void Weapon::setType(std::string type)
+{
+    this->type = type;
+}
+
+std::string Weapon::getType() const;
+{
+    return(this->type);
+}
+
+Weapon::Weapon()
+{
+}
+
+Weapon::Weapon(std::string  type)
+{
+    this->type = type;
+}
+
+Weapon::~Weapon()
+{
+}

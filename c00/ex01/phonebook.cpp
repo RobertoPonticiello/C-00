@@ -1,38 +1,41 @@
 #include "phonebook.hpp"
 #include <iostream>
 #include <iomanip>
-#include <cstdlib>   // per std::atoi
+#include <cstdlib>
 
 /* ================= CONSTRUCTOR ================= */
 
 PhoneBook::PhoneBook() : nextIndex(0), count(0) {}
 
+/* ================= UTILITY ================= */
+
+static std::string getNonEmptyInput(const std::string& prompt)
+{
+    std::string input;
+
+    while (true)
+    {
+        std::cout << prompt;
+        std::getline(std::cin, input);
+
+        if (!input.empty())
+            return input;
+
+        std::cout << "Input non valido. Il campo non può essere vuoto.\n";
+    }
+}
+
 /* ================= ADD CONTACT ================= */
 
 void PhoneBook::addContact()
 {
-    Contact     c;
-    std::string input;
+    Contact c;
 
-    std::cout << "First name: ";
-    std::getline(std::cin, input);
-    c.setFirstName(input);
-
-    std::cout << "Last name: ";
-    std::getline(std::cin, input);
-    c.setLastName(input);
-
-    std::cout << "Nickname: ";
-    std::getline(std::cin, input);
-    c.setNickname(input);
-
-    std::cout << "Phone number: ";
-    std::getline(std::cin, input);
-    c.setNumber(input);
-
-    std::cout << "Darkest secret: ";
-    std::getline(std::cin, input);
-    c.setSecret(input);
+    c.setFirstName(getNonEmptyInput("First name: "));
+    c.setLastName(getNonEmptyInput("Last name: "));
+    c.setNickname(getNonEmptyInput("Nickname: "));
+    c.setNumber(getNonEmptyInput("Phone number: "));
+    c.setSecret(getNonEmptyInput("Darkest secret: "));
 
     contacts[nextIndex] = c;
 
@@ -56,15 +59,26 @@ void PhoneBook::search() const
 
     printTable();
 
-    std::cout << "Index: ";
-    std::getline(std::cin, input);
-
-    index = std::atoi(input.c_str());
-
-    if (index < 0 || index >= count)
+    while (true)
     {
-        std::cout << "Invalid index\n";
-        return;
+        std::cout << "Index: ";
+        std::getline(std::cin, input);
+
+        if (input.empty())
+        {
+            std::cout << "Indice non valido.\n";
+            continue;
+        }
+
+        index = std::atoi(input.c_str());
+
+        if (index < 0 || index >= count)
+        {
+            std::cout << "Indice fuori range.\n";
+            continue;
+        }
+
+        break;
     }
 
     printContact(index);
@@ -110,7 +124,7 @@ void PhoneBook::printContact(int index) const
 
 int main()
 {
-    PhoneBook  pb;
+    PhoneBook   pb;
     std::string cmd;
 
     while (true)
@@ -124,6 +138,9 @@ int main()
             pb.search();
         else if (cmd == "EXIT")
             break;
+        else
+            std::cout << "Comando non valido.\n";
     }
+
     return 0;
 }
