@@ -1,23 +1,19 @@
 #ifndef WEAPON_HPP
-# define WEAPON_HPP
+#define WEAPON_HPP
 
 #include <string>
-#include <iostream>
-#include <new>
 
 class Weapon
 {
-    private:
+private:
     std::string type;
 
-    public:
-    Weapon();
-    Weapon(std::string type);
+public:
+    Weapon(const std::string& type);
     ~Weapon();
 
-    void setType(std::string type);
-    std::string getType() const;
-
+    const std::string& getType() const;
+    void setType(const std::string& newType);
 };
 
 #endif
